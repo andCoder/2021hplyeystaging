@@ -27,7 +27,11 @@ $(document).ready(function(){
                     if (data.loggedin == true){
                         $('form#login .notification').show().removeClass('error').removeClass('notice').addClass('success').text(data.message);
                         //document.location.href = redirecturl;
-                        window.location.replace(window.location.href+'?reload');
+                        if(data.isOwner){
+                            window.location.replace(window.location.href + '/add-listing/');
+                        } else {
+                            window.location.replace(window.location.href + '?reload');
+                        }
                         success = true;
                     } else {
                         $('form#login .notification').show().addClass('error').removeClass('notice').removeClass('success').html(data.message);

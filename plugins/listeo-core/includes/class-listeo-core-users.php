@@ -339,14 +339,11 @@ class Listeo_Core_Users {
 	          	// do_action('wp_login', $user_signon->ID);
 	            wp_set_current_user($user_signon->ID);
 	            wp_set_auth_cookie($user_signon->ID, true);
-		        echo json_encode(
-
-		        	array(
-		        		'loggedin'	=>	true,
-		        		'message'	=>	esc_html__('Login successful, redirecting...','listeo_core'),
-		        	)
-
-		        );
+			    echo json_encode(array(
+				    'loggedin'	=>	true,
+				    'message'	=>	esc_html__('Login successful, redirecting...','listeo_core'),
+				    'isOwner'   => current_user_can('owner')
+			    ) );
 		        die();
 			}
 			else
