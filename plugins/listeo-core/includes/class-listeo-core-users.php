@@ -248,7 +248,7 @@ class Listeo_Core_Users {
 			} else {
 			 	$login_url = wp_login_url();
 			}
-
+            $login_url = add_query_arg( array( 'first_signin' => 1 ), $login_url );
 			$user = get_user_by( 'id', $user_id );
 
 			$mail_args = array(
