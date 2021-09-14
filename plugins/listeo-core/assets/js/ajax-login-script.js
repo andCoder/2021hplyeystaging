@@ -27,8 +27,7 @@ $(document).ready(function(){
                     if (data.loggedin == true){
                         $('form#login .notification').show().removeClass('error').removeClass('notice').addClass('success').text(data.message);
                         //document.location.href = redirecturl;
-                        const params = new URLSearchParams(window.location.search);
-                        if(params.has('first_signin')){
+                        if(data.newVendor){
                             window.location.replace(window.location.href + '/add-listing/');
                         } else {
                             window.location.replace(window.location.href + '?reload');

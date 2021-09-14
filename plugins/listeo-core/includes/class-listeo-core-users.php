@@ -248,7 +248,6 @@ class Listeo_Core_Users {
 			} else {
 			 	$login_url = wp_login_url();
 			}
-            $login_url = add_query_arg( array( 'first_signin' => 1 ), $login_url );
 			$user = get_user_by( 'id', $user_id );
 
 			$mail_args = array(
@@ -339,11 +338,15 @@ class Listeo_Core_Users {
 	          	// do_action('wp_login', $user_signon->ID);
 	            wp_set_current_user($user_signon->ID);
 	            wp_set_auth_cookie($user_signon->ID, true);
+                $is_new_vendor = current_user_can( 'owner' ) &&
+                                 get_user_meta( $user_signon->ID, 'new_vendor', true );
+                delete_user_meta( $user_signon->ID, 'new_vendor' );
 		        echo json_encode(
 
 		        	array(
-		        		'loggedin'	=>	true,
-		        		'message'	=>	esc_html__('Login successful, redirecting...','listeo_core'),
+		        		'loggedin'	 =>	true,
+                        'newVendor' => $is_new_vendor,
+		        		'message'	 =>	esc_html__('Login successful, redirecting...','listeo_core'),
 		        	)
 
 		        );
@@ -627,7 +630,7 @@ class Listeo_Core_Users {
 		if ( is_wp_error($result) ){
 			  echo json_encode(array('registered'=>false, 'message'=> $result->get_error_message()));
 	    } else {
-
+            update_user_meta( $result, 'new_vendor', 1 );
 	    	if ( get_option('listeo_autologin') ) {
 	    		if ( get_option('listeo_display_password_field') ) :
 		        	echo json_encode(array('registered'=>true, 'message'=>esc_html__('You have been successfuly registered, you will be logged in a moment.','listeo_core')));
